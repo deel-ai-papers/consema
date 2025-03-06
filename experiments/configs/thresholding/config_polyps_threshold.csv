@@ -1,0 +1,7 @@
+dataset,model,device,chosen_nc_score,covratio,alpha,structuring_element
+polyps,pranet,cpu,thresholding,0.9,0.1,threshold
+polyps,pranet,cpu,thresholding,0.9,0.05,threshold
+polyps,pranet,cpu,thresholding,0.99,0.1,threshold
+polyps,pranet,cpu,thresholding,0.99,0.05,threshold
+polyps,pranet,cpu,thresholding,0.999,0.1,threshold
+polyps,pranet,cpu,thresholding,0.999,0.05,threshold

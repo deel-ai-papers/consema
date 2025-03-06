@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "consema"
+version = "0.1.0"
+description = "ConSeMa, Conformalization of Segmentation by Margin expansion. Uncertainty quantification in image segmentation with conformal prediction and mathematical morphology"
+authors = [
+    {name = "Luca Mossina", email = "luca.mossina@irt-saintexupery.com"}
+]
+
+# Specify dependencies without versions
+dependencies = [
+  "pillow",
+  "gdown", 
+  "torch", 
+  "numpy", 
+  "scikit-learn", 
+  "pandas", 
+  "matplotlib",
+  "seaborn", 
+  "scipy", 
+  "python-dotenv", 
+  "tqdm", 
+  "scikit-image", 
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "black", "ipykernel"]
+
+[tool.setuptools.packages.find]
+where = ["src"]  # Ensure only src/ is included
+exclude = ["tests*"]  # Exclude the top-level tests/ directory
