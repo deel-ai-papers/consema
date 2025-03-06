@@ -66,14 +66,6 @@ class UniversegInferenceWrap:
             self.device
         )
 
-        # if precomputed_soft_prediction is not None:
-        #     # raise ValueError("Universeg: precomputed predictions not supported")
-        #     print(" --- WARNING: Universeg, precomputed predictions not supported yet")
-        #     logits = torch.tensor(precomputed_soft_prediction).to(self.device)
-        # else:
-        #     logits = self.model(
-        #         image[None], self.support_images[None], self.support_labels[None]
-        #     )[0]
         logits = self.model(
             image[None], self.support_images[None], self.support_labels[None]
         )[0]

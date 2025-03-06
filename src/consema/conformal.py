@@ -19,8 +19,6 @@ from consema.morphology import (
     dilation_metrics,
 )
 
-# from consema.plots import plot_margin_and_recovered, margin_gradient_visu
-
 
 def recovered_pixels_bin_array(
     gt: np.ndarray, pred_mask: np.ndarray, extended_mask: np.ndarray
@@ -40,7 +38,7 @@ def thresholding_score(
 
     num_pixels_gt = np.count_nonzero(gt_mask_)
 
-    ## REMARK: if threshold in (0,1), than we could correctly "negatively" too (thre < 0.5).
+    ## REMARK: if threshold in (0,1), than we could correct "negatively" too (thre < 0.5).
     ## Hence, we could contract or expand the mask, and the conformal quantile could be negative.
     #
     def eval_thre_coverage(thre):
@@ -53,11 +51,9 @@ def thresholding_score(
         return coverage
 
     optimal_thre = dichotomic_search(eval_thre_coverage, coverage_threshold)
-    # dilated_mask = operator_thresholding(soft_pred_mask_, optimal_thre)
 
     nonconformity_score = 1 - optimal_thre
 
-    # return nonconformity_score, dilated_mask
     return nonconformity_score
 
 
@@ -81,7 +77,6 @@ def dichotomic_search(
         else:
             lbd_upper = mid
 
-    # return lbd_upper
     return lbd_lower
 
 from typing import Union
@@ -146,14 +141,10 @@ class Conformalizer:
         self.verbose = verbose
 
         if nonconformity_function_name == "fixed_disk":
-            # used for calibration:
             self.nonconformity_function = dilation_score_fixed_disk
-            # used for inference, to build pred. set:
             self.operator = operator_dilation_sequential
         elif nonconformity_function_name == "variable_disk":
-            # used for calibration:
             self.nonconformity_function = dilation_score_variable_disk
-            # used for inference, to build pred. set:
             self.operator = operator_dilation_disk_radius
         elif nonconformity_function_name == "thresholding":
             self.nonconformity_function = thresholding_score
@@ -221,7 +212,6 @@ class Conformalizer:
             self.nonconformity_scores = np.array(nonconformity_scores_list)
         else:
             self.nonconformity_scores = torch.Tensor(nonconformity_scores_list)
-        # return self.results
 
     def test_inferences(self, test_dataset, verbose: bool = False):
         results = []
@@ -269,33 +259,25 @@ class Conformalizer:
     ):
         conformalizing_quantile = self.get_conformal_quantile(alpha_risk)
 
-        # print(f"{conformalizing_quantile = }")
-
         results = ConformalResults([], [], [], [], [])
         results.conformalizing_quantile = conformalizing_quantile
 
-        for i, pred in enumerate(test_inference_results):
-            # test_input_image = pred["Image"][0]  # .cpu().numpy()
-            # if isinstance(self.inferencer, UniversegInferenceWrap):
+        for _, pred in enumerate(test_inference_results):
             if isinstance(pred["Ground Truth"][0], torch.Tensor):
                 test_gt_mask = pred["Ground Truth"][0].cpu().numpy()
                 test_hard_pred = pred["Prediction"][0].cpu().numpy()
                 test_soft_pred = pred["Soft Prediction"][0].cpu().numpy()
             else:
-                test_gt_mask = pred["Ground Truth"][0]  # .cpu().numpy()
-                test_hard_pred = pred["Prediction"][0]  # .cpu().numpy()
-                test_soft_pred = pred["Soft Prediction"][0]  # .cpu().numpy()
+                test_gt_mask = pred["Ground Truth"][0]
+                test_hard_pred = pred["Prediction"][0]
+                test_soft_pred = pred["Soft Prediction"][0]
 
             if self.nonconformity_function.__name__ == "thresholding_score":
                 dilated_mask = self.operator(
                     test_soft_pred,
                     1 - conformalizing_quantile,
-                    # test_soft_pred,
-                    # conformalizing_quantile,
                 )
             else:
-                # WARNING: at inference, it applies variable-size dilation, not iterative 3x3
-                # (ok for score computation, but not for inference)
                 dilated_mask = self.operator(
                     test_hard_pred,
                     conformalizing_quantile,
@@ -329,7 +311,6 @@ class Conformalizer:
         plt.scatter(conformal_idx, conformal_q, color="red")
 
         if threshold_score:
-            # threshos = (1 - self.nonconformity_scores).tolist()
             threshos = (self.nonconformity_scores).tolist()
             plt.plot(sorted(threshos, reverse=True), label="inference thresholds")
             plt.scatter(conformal_idx, conformal_q, color="red")
