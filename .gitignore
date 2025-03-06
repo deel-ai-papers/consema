@@ -1,0 +1,20 @@
+# project ignores
+benchmarks/
+
+# boilerplate ignores
+.env
+.venv
+*.egg-info
+
+data/
+.data/
+
+## development
+.vscode/
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
+.old/
+
+## figures
+*.png
