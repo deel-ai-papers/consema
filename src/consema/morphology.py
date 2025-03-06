@@ -2,8 +2,7 @@ import numpy as np
 import torch
 import skimage.morphology as morpho
 
-# import torch
-from typing import Optional, Tuple
+from typing import Optional
 
 
 def operator_dilation_sequential(
@@ -23,7 +22,6 @@ def operator_dilation_sequential(
     return dilated
 
 
-# def operator_disk_dilation(
 def operator_dilation_disk_radius(
     input_mask: np.ndarray,
     operator_parameter,
@@ -53,7 +51,7 @@ def dilation_score_fixed_disk(
     pred_mask_: np.ndarray,
     se_params_: dict,
     coverage_threshold: float,
-) -> int:  # Tuple[int, np.ndarray]:
+) -> int:
     if isinstance(gt_mask_, torch.Tensor):
         gt_mask_ = gt_mask_.cpu().numpy()
     if isinstance(pred_mask_, torch.Tensor):
@@ -69,7 +67,7 @@ def dilation_score_fixed_disk(
         )
 
     num_pixels_gt = np.count_nonzero(gt_mask_)
-    dilated_mask = pred_mask_  # .copy()
+    dilated_mask = pred_mask_
 
     if np.sum(dilated_mask) <= 0:
         raise ValueError(" -- [pred_mask_] must have at least one pixel")
@@ -79,7 +77,6 @@ def dilation_score_fixed_disk(
     # structuring element is FIXED throughout the iterations
     iteration = 0
     nonconformity_score = iteration
-    # max_iter = 100
     max_score = 2 * np.max(dilated_mask.shape)
 
     while True:
@@ -96,9 +93,6 @@ def dilation_score_fixed_disk(
             break
         else:
             iteration += 1  # counts iterations, does not affect the radius of disk B
-
-            # WARNING: this was correct here (fixed radius 1), but used incorrectly in test.
-            # dilated_mask = operator_disk_dilation(dilated_mask, 1, se_params_)
             radius = 1
             # WARNING: we do ONE dilation of SE with radius 1 (3x3 cross or disk)
             dilated_mask = operator_dilation_disk_radius(
@@ -109,7 +103,7 @@ def dilation_score_fixed_disk(
 
         nonconformity_score = iteration
 
-    return nonconformity_score  # , dilated_mask
+    return nonconformity_score
 
 
 def dilation_score_variable_disk(
@@ -117,7 +111,11 @@ def dilation_score_variable_disk(
     pred_mask_: np.ndarray,
     se_params_: dict,
     coverage_threshold: float,
-) -> int:  # Tuple[int, np.ndarray]:
+) -> int:
+    """
+    WARNING: this function was not used for experiments in paper, hence
+    it was not reviewed and could contain bugs
+    """
     if gt_mask_.ndim > 2:
         raise ValueError(
             f" -- [gt_mask_] must have 2 dimensions (H x W), but got {gt_mask_.ndim}"
@@ -131,10 +129,9 @@ def dilation_score_variable_disk(
 
     radius = 0
     og_pred_mask = pred_mask_.copy()
-    dilated_mask = pred_mask_  # .copy()
+    dilated_mask = pred_mask_ 
     nonconformity_score = radius
     max_iter = 35
-    # max_score = np.max(dilated_mask.shape)
 
     while True:
         if radius >= max_iter:
@@ -149,13 +146,12 @@ def dilation_score_variable_disk(
             break
         else:
             radius += 1
-            # dilated_mask = operator_disk_dilation(og_pred_mask, radius, se_params_)
             dilated_mask = operator_dilation_disk_radius(
                 og_pred_mask, radius, se_params_
             )
             nonconformity_score = radius
 
-    return nonconformity_score  # , dilated_mask
+    return nonconformity_score
 
 
 # function to measure the size of the dilated mask and the stretch factor over the original predicted mask
@@ -173,7 +169,6 @@ def dilation_metrics(
             f" -- [predicted_mask] must have 2 dimensions (H x W), but got {predicted_mask.ndim} dimensions"
         )
 
-    # margin = dilated_mask - predicted_mask
     num_added_pixels = np.sum(dilated_mask) - np.sum(predicted_mask)
     size_dil_mask = np.sum(dilated_mask)
     stretch = size_dil_mask / np.sum(predicted_mask)
