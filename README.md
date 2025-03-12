@@ -10,8 +10,16 @@ Code repository for the [paper](https://arxiv.org/abs/2503.05618):
 ## Idea
 Use morphological operations (dilation) to add a margin around a predicted (binary) segmentation mask, such that the ground-truth mask is covered with high probability via conformal prediction.
 
+In the synthetic example below, the red pixels (bold contours) are false negatives, that is, they belong to the ground truth but were not predicted.
+The animation shows **five sequential dilations** by a (3X3) cross structuring element, which expand the margin of the predicted mask (darker blue).
+Three iterations is the minimal number of iterations needed, i.e. the _nonconformity score_: all missing pixels are recovered (shown in orange).
+
 ![Dilation Animation](figures/dilation_animation.gif)
 
+## Examples
+The directory [notebooks](/notebooks) contains complete examples for the datasets:
+- [WBC](/notebooks/n201_consema_wbc.ipynb) and [OASIS](/notebooks/n202_consema_oasis.ipynb), using the _UniverSeg_ segmentation model
+- [polyps](/notebooks/n203_consema_polyps.ipynb) tumors dataset, using _PraNet_ (we use precomputed predictions as distributed by [A. Angelopoulos](https://github.com/aangelopoulos/conformal-prediction/blob/67f506e4880e192ef9fc6a2de73e21b277f8c544/notebooks/tumor-segmentation.ipynb).
 
 ## References & sources
 Starting points for datasets:
