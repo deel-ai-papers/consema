@@ -1,14 +1,17 @@
-# ConSeMa: conformalization of segmentation by margin expansion
+# Conformal Prediction for Image Segmentation Using Morphological Prediction Sets
 
-Code repository for the [paper](https://arxiv.org/abs/2503.05618):
-> Mossina L. & Friedrich L. (2025). _Conformal Prediction for Image Segmentation Using Morphological Prediction Sets_. arXiv preprint arXiv:2503.05618.
+**MICCAI 2025**. [📄 arXiv](https://arxiv.org/abs/2503.05618)
 
-- Lab: [DEEL](https://www.deel.ai/), at [IRT Saint Exupéry](https://www.irt-saintexupery.com/about/), Toulouse, France.
-- Lab's open source [software](https://github.com/deel-ai) and [papers](https://github.com/deel-ai-papers)
+[Luca Mossina](https://scholar.google.com/citations?hl=en&user=SCpz8XMAAAAJ),¹ [Corentin Friedrich](https://scholar.google.com/citations?user=w6oH0xUAAAAJ&hl=en)¹
+
+¹ [IRT Saint Exupéry](https://www.irt-saintexupery.com/smart-technologies/), Toulouse, France. 
+
+- Research Lab: [DEEL](https://www.deel.ai), *Dependable, Explainable & Embeddable Learning* for trustworthy AI.
+- Lab's open-source [software](https://github.com/deel-ai) and [papers](https://github.com/deel-ai-papers)
 
 
 ## Idea
-Use morphological operations (dilation) to add a margin around a predicted (binary) segmentation mask, such that the ground-truth mask is covered with high probability via conformal prediction.
+We use [morphological operations](https://en.wikipedia.org/wiki/Mathematical_morphology) (dilation, sequences of dilations, etc.) to add a margin around a predicted (binary) segmentation mask, such that the ground-truth mask is covered with high probability via conformal prediction.
 
 In the synthetic example below, the red pixels (bold contours) are false negatives, that is, they belong to the ground truth but were not predicted.
 The animation shows **five sequential dilations** by a (3X3) cross structuring element, which expand the margin of the predicted mask (darker blue).
@@ -16,10 +19,12 @@ Three iterations is the minimal number of iterations needed, i.e. the _nonconfor
 
 ![Dilation Animation](figures/dilation_animation.gif)
 
+
 ## Examples
 The directory [notebooks](/notebooks) contains complete examples for the datasets:
 - [WBC](/notebooks/n201_consema_wbc.ipynb) and [OASIS](/notebooks/n202_consema_oasis.ipynb), using the _UniverSeg_ segmentation model
 - [polyps](/notebooks/n203_consema_polyps.ipynb) tumors dataset, using _PraNet_ (we use precomputed predictions as distributed by [A. Angelopoulos](https://github.com/aangelopoulos/conformal-prediction/blob/67f506e4880e192ef9fc6a2de73e21b277f8c544/notebooks/tumor-segmentation.ipynb).
+
 
 ## References & sources
 Starting points for datasets:
@@ -30,6 +35,7 @@ Starting points for datasets:
 Models used:
 - UniverSeg. [code](https://github.com/JJGO/UniverSeg), [paper](https://arxiv.org/abs/2304.06131)
 - PraNet. [paper](https://link.springer.com/chapter/10.1007/978-3-030-59725-2_26)
+
 
 ## Citation
 ```
