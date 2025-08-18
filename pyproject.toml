@@ -27,7 +27,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "black", "ipykernel"]
+dev = ["pytest", "black", "ipykernel", "nbstripout", "pre-commit"]
 
 [tool.setuptools.packages.find]
 where = ["src"]  # Ensure only src/ is included

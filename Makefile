@@ -5,7 +5,7 @@
         dotenv \
         benchmarks \
 
-MYPYTHON ?= /usr/bin/python3.9
+MYPYTHON ?= /usr/bin/python3.11
 PROJECT_DIR=$(PWD)
 DATA_DIR ?= $(PROJECT_DIR)/benchmarks
 # EXTERNAL_REQUIREMENTS = $(PROJECT_DIR)/external.requirements.txt
@@ -34,10 +34,10 @@ UNIVERSEG_COMMIT_HASH = 833a0c34c65e38d675e21bd48ddec6797cc03259
 help:
 	@echo "make install [MYPYTHON=python3.XX] [DATA_DIR=/path/to/raw/data/files]"
 
-install: clean venv dotenv
+install: setup clean venv dotenv setup-nbstripout
 
 # useful to modify pyproject.toml dependencies + reinstall local package
-update:
+local:
 	@.venv/bin/python -m pip install --editable .[dev]
 
 benchmarks: setup tumor_benchmark universeg
@@ -50,6 +50,9 @@ venv:
 	@.venv/bin/python -m pip install --upgrade pip
 	@.venv/bin/python -m pip install --editable .[dev]
 
+setup-nbstripout:
+	.venv/bin/nbstripout --install --keep-output --drop-empty-cells --attributes .gitattributes
+	
 dotenv:
 	@echo "exporting local paths to .env file"
 	@echo PROJECT_DIR=$(PROJECT_DIR) > .env
