@@ -13,7 +13,7 @@
 
 
 ## Idea
-We use [morphological operations](https://en.wikipedia.org/wiki/Mathematical_morphology) (dilation, sequences of dilations, etc.) to add a margin $\mu_{\lambda}(\hat{Y})$ around a predicted (binary) segmentation mask $\hat{Y}$, such that the ground-truth mask $Y$ is covered with high probability.
+We use [morphological operations](https://en.wikipedia.org/wiki/Mathematical_morphology) (dilation, sequences of dilations, etc.) to add a margin $\mu_{\lambda}(\hat{Y})$ around a predicted (binary) segmentation mask $\hat{Y}$, such that the ground-truth mask $Y$ is covered with high probability, and false negative pixels are statistically controlled.
 
 To make this statistically rigorous, we use [**conformal prediction**](https://arxiv.org/abs/2107.07511): using calibration data, we find the minimal number of dilations $\lambda$ (applied to the predicted mask) needed to cover the ground truth, on average.
 We write $\delta^{\lambda}(\hat{Y})$ to say that we apply dilation $\lambda$ times, at each step adding a margin of pixels to the predicted mask $\hat{Y}$.
@@ -39,8 +39,8 @@ In purple, we have the pixels that were correctly predicted. The remaining red o
 ![Example](assets/grid_pred.png)
 
 
-The animation shows **five sequential dilations** by a (3X3) cross structuring element, which expand the margin of the predicted mask (darker blue).
-Three iterations is the minimal number of iterations needed, i.e. the _nonconformity score_: all missing pixels are recovered (shown in orange).
+The animation shows a sequence of **four dilations** by a $(3 \times 3)$ cross structuring element, which expand the margin of the predicted mask (darker blue, fig. above).
+Four iterations is the minimal number of iterations needed, i.e. the _nonconformity score_ for this specific image: all missing pixels are recovered (shown in orange).
 
 ![Dilation Animation](assets/dilation_anime.gif)
 
