@@ -93,8 +93,15 @@ def setup_universeg_wbc(config: dict):
 
     model = universeg(pretrained=True)
     model.to(device_str)
+
     LABEL = "nucleus"
     # LABEL = "cytoplasm" ## <-- not particularly interesting
+
+    if (
+        config["label"] is not None
+    ):  # later addition: not used for expes in paper (used LABEL = "nucleus")
+        LABEL = config["label"]
+        print(f" --- Using label {LABEL} for WBC dataset")
 
     ## high performance predictor
     # n_support_samples = 48
@@ -169,7 +176,16 @@ def setup_universeg_oasis(config: dict):
     model = universeg(pretrained=True)
     model.to(device_str)
 
-    LABEL = 0
+    # all other labels are also available, and give similar results
+    LABEL = (
+        0  # background: not the most interesting label, but the one used in the paper
+    )
+
+    if (
+        config["label"] is not None
+    ):  # later addition: was not used for expes in paper (used LABEL = 0)
+        LABEL = config["label"]
+        print(f" --- Using label {LABEL} for OASIS dataset")
 
     ## high performance predictor
     # n_support_samples = 48
@@ -369,6 +385,7 @@ def run_seed(
 
 import traceback
 from datetime import datetime
+
 
 def main():
     parser = argparse.ArgumentParser(description="Run experiments")
