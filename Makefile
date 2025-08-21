@@ -34,15 +34,13 @@ UNIVERSEG_COMMIT_HASH = 833a0c34c65e38d675e21bd48ddec6797cc03259
 help:
 	@echo "make install [MYPYTHON=python3.XX] [DATA_DIR=/path/to/raw/data/files]"
 
-install: setup clean venv dotenv setup-nbstripout
+install: setup clean venv dotenv setup-nbstripout universeg tumor_data
 
 # useful to modify pyproject.toml dependencies + reinstall local package
 local:
 	@.venv/bin/python -m pip install --editable .[dev]
 
 benchmarks: setup tumor_benchmark universeg
-
-data: setup tumor_data universeg_data
 
 venv:
 	@echo "creating virtual environment (.venv)"
@@ -69,15 +67,25 @@ setup:
 	@mkdir -p $(POLYPS_PRECOMPUTED)
 	@echo " --- created precomputed data directory: $(POLYPS_PRECOMPUTED)"
 
-# --- benchmark n.1: PraNet + Polyps data
-# download data and pre-computed predictions via existing repo by aangelopoulos
-tumor_benchmark: setup tumor_notebook tumor_data
+clean:
+	@if [ -d .venv ]; then \
+		size=$$(du -sh .venv 2>/dev/null | awk '{print $1}'); \
+		echo "Deleting: .venv/ ($$size)"; \
+		read -p "ARE YOU SURE? [YES/no] " confirm; \
+		if [ "$$confirm" = "YES" ]; then \
+			echo "Deleting .venv and all its content"; \
+			rm -rf .venv; \
+		else \
+		echo "make clean: canceled."; \
+		fi; \
+	else \
+		echo ".venv does not exist or is already removed."; \
+	fi
 
-tumor_notebook:
-	@echo " --- downloading tumor-segmentation notebook (via aangelopoulos)"
-	@echo " --- $(POLYPS_PRECOMPUTED)/tumor-segmentation.ipynb"
-	wget $(AANGELOPOULOS_REPO_NOTEBOOK_URL)?raw=true -O $(POLYPS_PRECOMPUTED)/tumor-segmentation.ipynb
 
+# ===================================== #
+#  Benchmark n.1: PraNet + Polyps data  #
+# ===================================== #
 tumor_data:
 	@echo " --- downloading polyps data (Angelopoulos)"
 	.venv/bin/python -m gdown $(AANGELOPOULOS_POLYPS_GDRIVE_ID) -O $(POLYPS_PRECOMPUTED)/data_polyps.tar.xz
@@ -86,7 +94,17 @@ tumor_data:
 	@echo " --- removing all subdirectories except polyps"
 	find $(POLYPS_PRECOMPUTED)/data -mindepth 1 -maxdepth 1 -type d ! -name 'polyps' -exec rm -rf {} +
 
-# --- Benchmark n.2: UniverSeg + OASIS & WBC
+# Bonus: source the notebook from Angelopoulos repo, with precomputed predictions
+tumor_notebook:
+	@echo " --- downloading tumor-segmentation notebook (via aangelopoulos)"
+	@echo " --- $(POLYPS_PRECOMPUTED)/tumor-segmentation.ipynb"
+	wget $(AANGELOPOULOS_REPO_NOTEBOOK_URL)?raw=true -O $(POLYPS_PRECOMPUTED)/tumor-segmentation.ipynb
+
+
+
+# ======================================== #
+#  Benchmark n.2: UniverSeg + OASIS & WBC  #
+# ======================================== #
 universeg: setup
 	@echo " === Cloning the UniverSeg repository"
 	@if [ -d $(UNIVERSEG_DIR) ]; then \
@@ -103,21 +121,10 @@ universeg: setup
 	@touch $(UNIVERSEG_DIR)/example_data/__init__.py
 	.venv/bin/python -m pip install -e benchmarks/universeg
 
-clean:
-	@if [ -d .venv ]; then \
-		size=$$(du -sh .venv 2>/dev/null | awk '{print $1}'); \
-		echo "Deleting: .venv/ ($$size)"; \
-		read -p "ARE YOU SURE? [YES/no] " confirm; \
-		if [ "$$confirm" = "YES" ]; then \
-			echo "Deleting .venv and all its content"; \
-			rm -rf .venv; \
-		else \
-		echo "make clean: canceled."; \
-		fi; \
-	else \
-		echo ".venv does not exist or is already removed."; \
-	fi
 
+##
+##
+##
 ##
 ## === Not used in experiments for paper (now just using precomputed predictions):
 ##
