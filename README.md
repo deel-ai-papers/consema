@@ -45,6 +45,13 @@ Four iterations is the minimal number of iterations needed, i.e. the _nonconform
 ![Dilation Animation](assets/dilation_anime.gif)
 
 
+## Getting started
+
+```
+$ make install
+```
+
+
 ## Examples
 The directory [notebooks](/notebooks) contains complete examples for the datasets:
 - [WBC](/notebooks/n201_consema_wbc.ipynb) and [OASIS](/notebooks/n202_consema_oasis.ipynb), using the _UniverSeg_ segmentation model

@@ -32,6 +32,7 @@ def thresholding_score(
     soft_pred_mask_: np.ndarray,
     coverage_threshold: float,
     se_params_=None,
+    return_dilated_mask=False,
 ):
     if se_params_ is not None:
         se_params_ = None
@@ -53,6 +54,12 @@ def thresholding_score(
     optimal_thre = dichotomic_search(eval_thre_coverage, coverage_threshold)
 
     nonconformity_score = 1 - optimal_thre
+
+    if return_dilated_mask:
+        dilated_mask = operator_thresholding(
+            pred_softmax=soft_pred_mask_, operator_parameter=optimal_thre
+        )
+        return nonconformity_score, dilated_mask
 
     return nonconformity_score
 
@@ -79,7 +86,9 @@ def dichotomic_search(
 
     return lbd_lower
 
+
 from typing import Union
+
 
 @dataclass
 class ConformalResults:
