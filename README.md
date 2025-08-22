@@ -24,6 +24,8 @@ This gives us a **prediction set** $C_{\lambda}(\hat{Y}) = \hat{Y} \cup \mu_{\la
 
 $$\mathbb{P}(Y \subseteq C_{\lambda}(\hat{Y})) \geq 1 - \alpha$$
 
+Here is an example of a morphological margin that covers all missed pixels (dataset: [WBC](#sources))
+![Morphological Prediction Set Example](assets/wbc_plot_example.png)
 
 This is a **nonparametric** method, which does not require any training or hyperparameter tuning, and is **model-agnostic**: it can be applied to any segmentation model, including **deep learning** models, **classical methods**, or even **human annotators**.
 
@@ -58,7 +60,7 @@ The directory [notebooks](/notebooks) contains complete examples for the dataset
 - [polyps](/notebooks/n203_consema_polyps.ipynb) tumors dataset, using _PraNet_ (we use precomputed predictions as distributed by [A. Angelopoulos](https://github.com/aangelopoulos/conformal-prediction/blob/67f506e4880e192ef9fc6a2de73e21b277f8c544/notebooks/tumor-segmentation.ipynb).
 
 
-## References & sources
+## Sources
 Starting points for datasets:
 - [WBC](https://github.com/JJGO/UniverSeg/blob/833a0c34c65e38d675e21bd48ddec6797cc03259/example_data/wbc.py#L55)
 - [OASIS](https://github.com/JJGO/UniverSeg/blob/833a0c34c65e38d675e21bd48ddec6797cc03259/example_data/oasis.py#L71) 
@@ -68,7 +70,7 @@ Models used:
 - UniverSeg. [code](https://github.com/JJGO/UniverSeg), [paper](https://arxiv.org/abs/2304.06131)
 - PraNet. [paper](https://link.springer.com/chapter/10.1007/978-3-030-59725-2_26)
 
-
+For full bibliographic references, see the [*Experiments* section in our paper](https://arxiv.org/pdf/2503.05618?#section.4).
 
 ## Citation
 
