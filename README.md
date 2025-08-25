@@ -1,15 +1,22 @@
 # Conformal Prediction for Image Segmentation Using Morphological Prediction Sets
 
-**MICCAI 2025**. [📄 arXiv](https://arxiv.org/abs/2503.05618). [`bibtex`](#citation).
+Accepted at [**MICCAI 2025**](https://conferences.miccai.org/2025/en/default.asp)
+
+[[📄 arXiv](https://arxiv.org/abs/2503.05618)] [[`bibtex`](#citation)]
 
 [Luca Mossina](https://scholar.google.com/citations?hl=en&user=SCpz8XMAAAAJ),¹ [Corentin Friedrich](https://scholar.google.com/citations?user=w6oH0xUAAAAJ&hl=en)¹
 
-¹ [IRT Saint Exupéry](https://www.irt-saintexupery.com/smart-technologies/), Toulouse, France. 
-
-
+¹ [IRT Saint Exupéry](https://www.irt-saintexupery.com/smart-technologies/), [Toulouse](https://www.toulouse-tourisme.com/en), France. 
 
 - Research Lab: [DEEL](https://www.deel.ai), *Dependable, Explainable & Embeddable Learning* for trustworthy AI.
-- Lab's open-source [software](https://github.com/deel-ai) and [papers](https://github.com/deel-ai-papers)
+- DEEL's [open-source software](https://github.com/deel-ai)
+- DEEL's [publications](https://www.deel.ai/publications/)
+
+**Poster session** @ MICCAI 2025. Come meet us:
+- Thursday, 2025 Sept 25, 11:00 - 12:30
+- Poster Session: **P2**
+- Poster Board: **A364** (Thu-AM)
+- Paper ID: 3902
 
 
 ## Idea
