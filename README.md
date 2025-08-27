@@ -2,7 +2,7 @@
 
 Accepted at [**MICCAI 2025**](https://conferences.miccai.org/2025/en/default.asp)
 
-[[📄 arXiv](https://arxiv.org/abs/2503.05618)] [[`bibtex`](#citation)]
+[[📄 arXiv](https://arxiv.org/abs/2503.05618)] [[`bibtex`](#citation)] [[poster](assets/Mossina_and_Friedrich_2025_poster.pdf)]
 
 [Luca Mossina](https://scholar.google.com/citations?hl=en&user=SCpz8XMAAAAJ),¹ [Corentin Friedrich](https://scholar.google.com/citations?user=w6oH0xUAAAAJ&hl=en)¹
 
@@ -21,6 +21,7 @@ Accepted at [**MICCAI 2025**](https://conferences.miccai.org/2025/en/default.asp
 
 ## Idea
 We use [morphological operations](https://en.wikipedia.org/wiki/Mathematical_morphology) (dilation, sequences of dilations, etc.) to add a margin $\mu_{\lambda}(\hat{Y})$ around a predicted (binary) segmentation mask $\hat{Y}$, such that the ground-truth mask $Y$ is covered with high probability, and false negative pixels are statistically controlled.
+(Hence the repo's name, **consema** = Conformalized Segmentation Margins).
 
 To make this statistically rigorous, we use [**conformal prediction**](https://arxiv.org/abs/2107.07511): using calibration data, we find the minimal number of dilations $\lambda$ (applied to the predicted mask) needed to cover the ground truth, on average.
 We write $\delta^{\lambda}(\hat{Y})$ to say that we apply dilation $\lambda$ times, at each step adding a margin of pixels to the predicted mask $\hat{Y}$.
@@ -69,13 +70,13 @@ The directory [notebooks](/notebooks) contains complete examples for the dataset
 
 ## Sources
 Starting points for datasets:
-- [WBC](https://github.com/JJGO/UniverSeg/blob/833a0c34c65e38d675e21bd48ddec6797cc03259/example_data/wbc.py#L55)
-- [OASIS](https://github.com/JJGO/UniverSeg/blob/833a0c34c65e38d675e21bd48ddec6797cc03259/example_data/oasis.py#L71) 
-- [polyps tumor data](https://github.com/aangelopoulos/conformal-prediction/blob/67f506e4880e192ef9fc6a2de73e21b277f8c544/notebooks/tumor-segmentation.ipynb)
+- [WBC](https://github.com/zxaoyou/segmentation_WBC), via [universeg repo](https://github.com/JJGO/UniverSeg/blob/833a0c34c65e38d675e21bd48ddec6797cc03259/example_data/wbc.py#L55)
+- [OASIS](https://sites.wustl.edu/oasisbrains/), via [universeg repo](https://github.com/JJGO/UniverSeg/blob/833a0c34c65e38d675e21bd48ddec6797cc03259/example_data/oasis.py#L71) 
+- polyps tumor data, via [aangelopoulos/conformal-prediction repo](https://github.com/aangelopoulos/conformal-prediction/blob/67f506e4880e192ef9fc6a2de73e21b277f8c544/notebooks/tumor-segmentation.ipynb)
 
 Models used:
-- UniverSeg. [code](https://github.com/JJGO/UniverSeg), [paper](https://arxiv.org/abs/2304.06131)
-- PraNet. [paper](https://link.springer.com/chapter/10.1007/978-3-030-59725-2_26)
+- UniverSeg: [code](https://github.com/JJGO/UniverSeg), [paper](https://arxiv.org/abs/2304.06131)
+- PraNet: [paper](https://link.springer.com/chapter/10.1007/978-3-030-59725-2_26), via [aangelopoulos/conformal-prediction repo](https://github.com/aangelopoulos/conformal-prediction/blob/67f506e4880e192ef9fc6a2de73e21b277f8c544/notebooks/tumor-segmentation.ipynb)
 
 For full bibliographic references, see the [*Experiments* section in our paper](https://arxiv.org/pdf/2503.05618?#section.4).
 
