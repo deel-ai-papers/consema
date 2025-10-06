@@ -1,25 +1,43 @@
 # Conformal Prediction for Image Segmentation Using Morphological Prediction Sets
 
-Accepted at [**MICCAI 2025**](https://conferences.miccai.org/2025/en/default.asp)
+[![arXiv](https://img.shields.io/badge/arXiv-2503.05618-b31b1b.svg)](https://arxiv.org/abs/2503.05618)
+[![Proceedings](https://img.shields.io/badge/DOI-10.1007%2F978--3--032--04965--0__8-blue.svg)](https://doi.org/10.1007/978-3-032-04965-0_8)
+[![bibtex](https://img.shields.io/badge/Citation-bibtex-yellow.svg)](#citation)
+[![Poster](https://img.shields.io/badge/Poster-PDF-lightgrey.svg)](assets/Mossina_and_Friedrich_2025_poster.pdf)
 
-[[📄 arXiv](https://arxiv.org/abs/2503.05618)] [[`bibtex`](#citation)] [[poster](assets/Mossina_and_Friedrich_2025_poster.pdf)]
+Accepted at [**MICCAI 2025**](https://conferences.miccai.org/2025/en/default.asp). 
+Official code for the paper *"Conformal Prediction for Image Segmentation Using Morphological Prediction Sets"*.
+
 
 [Luca Mossina](https://scholar.google.com/citations?hl=en&user=SCpz8XMAAAAJ),¹ [Corentin Friedrich](https://scholar.google.com/citations?user=w6oH0xUAAAAJ&hl=en)¹
 
-¹ [IRT Saint Exupéry](https://www.irt-saintexupery.com/smart-technologies/), [Toulouse](https://www.toulouse-tourisme.com/en), France. 
+¹ [IRT Saint Exupéry](https://www.irt-saintexupery.com/smart-technologies/). [Toulouse](https://www.toulouse-tourisme.com/en), France  
 
-- Research Lab: [DEEL](https://www.deel.ai), *Dependable, Explainable & Embeddable Learning* for trustworthy AI.
+- Research Lab: [DEEL](https://www.deel.ai), *Dependable, Explainable & Embeddable Learning* for trustworthy AI
 - DEEL's [open-source software](https://github.com/deel-ai)
 - DEEL's [publications](https://www.deel.ai/publications/)
 
-**Poster session** @ MICCAI 2025. Come meet us:
-- Thursday, 2025 Sept 25, 11:00 - 12:30
-- Poster Session: **P2**
-- Poster Board: **A364** (Thu-AM)
-- Paper ID: 3902
-
 
 ## Idea
+Visual example of our conformal margin: we build a morphological margin (via dilation) that covers all missed pixels (false negatives). Dataset: [WBC](#sources)
+![Morphological Prediction Set Example](assets/wbc_plot_example.png)
+
+
+### Synthetic example
+
+The animation shows a sequence of **four dilations** by a $(3 \times 3)$ cross structuring element, which expand the margin of the predicted mask (darker blue, see fig. below).
+Four iterations is the minimal number of iterations needed, i.e. the _nonconformity score_ for this specific image: all missing pixels are recovered with 4 iterations (shown in orange).
+
+![Dilation Animation](assets/dilation_anime.gif)
+
+In the following image, we have a ground truth mask (in red) and a predicted mask (in blue). 
+In purple, we have the pixels that were correctly predicted. The remaining red ones, are false negatives, i.e. pixels that belong to the ground truth but were not predicted.
+
+![Example](assets/grid_pred.png)
+
+
+
+## Method
 We use [morphological operations](https://en.wikipedia.org/wiki/Mathematical_morphology) (dilation, sequences of dilations, etc.) to add a margin $\mu_{\lambda}(\hat{Y})$ around a predicted (binary) segmentation mask $\hat{Y}$, such that the ground-truth mask $Y$ is covered with high probability, and false negative pixels are statistically controlled.
 (Hence the repo's name, **consema** = Conformalized Segmentation Margins).
 
@@ -32,27 +50,13 @@ This gives us a **prediction set** $C_{\lambda}(\hat{Y}) = \hat{Y} \cup \mu_{\la
 
 $$\mathbb{P}(Y \subseteq C_{\lambda}(\hat{Y})) \geq 1 - \alpha$$
 
-Here is an example of a morphological margin that covers all missed pixels (dataset: [WBC](#sources))
-![Morphological Prediction Set Example](assets/wbc_plot_example.png)
 
 This is a **nonparametric** method, which does not require any training or hyperparameter tuning, and is **model-agnostic**: it can be applied to any segmentation model, including **deep learning** models, **classical methods**, or even **human annotators**.
 
 - **requirement**: having a set of (previously unseen) **annotated** calibration pairs $(X_i, Y_i)_{i=1}^n$, that are i.i.d. samples from the same distribution as the test data.
 
 
-### Synthetic example
-The following example illustrates the idea of conformal prediction with  morphological operations.
 
-In the following image, we have a ground truth mask (in red) and a predicted mask (in blue). 
-In purple, we have the pixels that were correctly predicted. The remaining red ones, are false negatives, i.e. pixels that belong to the ground truth but were not predicted.
-
-![Example](assets/grid_pred.png)
-
-
-The animation shows a sequence of **four dilations** by a $(3 \times 3)$ cross structuring element, which expand the margin of the predicted mask (darker blue, fig. above).
-Four iterations is the minimal number of iterations needed, i.e. the _nonconformity score_ for this specific image: all missing pixels are recovered (shown in orange).
-
-![Dilation Animation](assets/dilation_anime.gif)
 
 
 ## Getting started
@@ -80,13 +84,26 @@ Models used:
 
 For full bibliographic references, see the [*Experiments* section in our paper](https://arxiv.org/pdf/2503.05618?#section.4).
 
+
+## License
+[MIT License](LICENSE) © 2025 [IRT Saint Exupéry](https://www.irt-saintexupery.com/).
+
+
+## Acknowledgements
+Part of the DEEL project on trustworthy AI ([deel.ai](https://www.deel.ai)).
+
+
 ## Citation
 
 ```
-@article{Mossina_2025_conformal,
-  title={Conformal Prediction for Image Segmentation Using Morphological Prediction Sets},
-  author={Mossina, Luca and Friedrich, Corentin},
-  journal={arXiv preprint arXiv:2503.05618},
-  year={2025}
+@InProceedings{Mossina_2025_conformal_morpho,
+    title={Conformal Prediction for Image Segmentation Using Morphological Prediction Sets},
+    author={Mossina, Luca and Friedrich, Corentin},
+    booktitle={Medical Image Computing and Computer Assisted Intervention -- MICCAI 2025},
+    year={2026},
+    publisher={Springer Nature Switzerland},
+    address={Cham},
+    pages={78--88},
 }
+
 ```
